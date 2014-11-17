@@ -8,6 +8,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import Flight.model.Flight;
 
 
+/**
+ * This class implements the FlightDAO interface. It provides methods for creating entries 
+ * in the GateWait database and also specific queries
+ * 
+ * @author Christian
+ *
+ */
 public class JdbcFlightDAO implements FlightDAO{
 	private JdbcTemplate jdbcTemplateObject;
 	   
