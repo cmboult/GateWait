@@ -6,6 +6,20 @@
   <name>GateWait Backend</name>
   <description>This project handles the backend of GateWait </description>
   
+	<build>
+      <plugins>
+  		<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-compiler-plugin</artifactId>
+        		<version>3.1</version>
+        		<configuration>
+           			<source>1.6</source>
+           			<target>1.6</target>
+        		</configuration>
+			</plugin>
+		</plugins>		
+	</build>	
+  
   <dependencies>
  
         <!-- Spring framework -->
@@ -50,6 +64,13 @@
   		<groupId>org.json</groupId>
   		<artifactId>json</artifactId>
   		<version>20140107</version>
+	</dependency>
+	
+
+	<dependency>
+		<groupId>com.googlecode.json-simple</groupId>
+		<artifactId>json-simple</artifactId>
+		<version>1.1.1</version>
 	</dependency>
  
   </dependencies>
