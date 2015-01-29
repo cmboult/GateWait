@@ -5,6 +5,9 @@ import javax.sql.DataSource;
 
 import Flight.model.Flight;
 
+/**
+ * The FlightDAO interface. Declares methods for interacting with the GateWait database.
+ */
 public interface FlightDAO {
    /** 
     * This is the method to be used to initialize
@@ -17,7 +20,7 @@ public interface FlightDAO {
     */
    public void create(Flight flight);
    /** 
-    * This is the method to be used to list down
+    * This is the method to be used to retrieve
     * a record from the ScheduledFlights table corresponding
     * to a passed flight id.
     */
@@ -26,6 +29,6 @@ public interface FlightDAO {
     * This is the method to be used to list down
     * all the records from the ScheduledFlights table.
     */
-   public List<Flight> listStudents();
+   public List<Flight> listFlights();
    
 }

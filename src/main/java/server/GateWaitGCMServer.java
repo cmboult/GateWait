@@ -27,7 +27,8 @@ import java.util.logging.Logger;
 
 import javax.net.ssl.SSLSocketFactory;
 /**
- * Smack implementation of client for GCM Cloud Connection Server.
+ * Smack XMPP implementation of client for GCM Cloud Connection Server.
+ * Handles all incoming App communications and pushes notifications to them.
  */
 
 public class GateWaitGCMServer {

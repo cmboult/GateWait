@@ -10,7 +10,7 @@ import Flight.model.Flight;
 
 /**
  * This class implements the FlightDAO interface. It provides methods for creating entries 
- * in the GateWait database and also specific queries
+ * in the GateWait database and queries for retrieving flights from it.
  * 
  * @author Christian
  *
@@ -37,7 +37,7 @@ public class JdbcFlightDAO implements FlightDAO{
 	    return flight;
 	}
 
-	public List<Flight> listStudents() {
+	public List<Flight> listFlights() {
 		String SQL = "select * from Student";
 	    List <Flight> flights = jdbcTemplateObject.query(SQL, new FlightMapper());
 	    return flights;

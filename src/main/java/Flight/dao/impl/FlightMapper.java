@@ -6,6 +6,9 @@ import org.springframework.jdbc.core.RowMapper;
 
 import Flight.model.Flight;
 
+/**
+ * Maps results from the SQL Query to a flight object
+ */
 public class FlightMapper implements RowMapper {
    public Flight mapRow(ResultSet rs, int rowNum) throws SQLException {
       Flight flight = new Flight();

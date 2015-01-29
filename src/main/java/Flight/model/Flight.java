@@ -3,6 +3,9 @@ package Flight.model;
 import java.sql.Date;
 import java.sql.Time;
 
+/**
+ * Model of a flight and it's information. Used to insert and retrieve information from the database.
+ */
 public class Flight {
 	
 	private String aircraftType;
@@ -30,7 +33,7 @@ public class Flight {
 	public Flight(String aircraftType, String destination, long epochTime, String identifier, String originCity, String originName){
 		this.setAircraftType(aircraftType);
 		this.setDestination(destination);
-		this.setDepartureDate(new Date(epochTime*1000L));
+		this.setDepartureDate(new Date(epochTime*1000L)); //convert unix times to a standard date and time
 		this.setDepartureTime(new Time(epochTime*1000L));
 		this.setIdentifier(identifier);
 		this.setOriginCity(originCity);
