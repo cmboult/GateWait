@@ -45,6 +45,7 @@ public class APICaller extends Thread{
 				JSONObject object = results.getJSONObject(i);
 				scheduledFlights.add(new Flight(object.getString("aircrafttype"), object.getString("destinationName"), object.getLong("filed_departuretime"), object.getString("ident"), object.getString("originCity"), object.getString("originName")));
 			}
+			//close HTTP connection
 			Unirest.shutdown();
 		} catch (UnirestException e) {
 			// TODO Auto-generated catch block

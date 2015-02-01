@@ -18,7 +18,7 @@ public interface FlightDAO {
     * This is the method to be used to create
     * a record in the ScheduledFlights table.
     */
-   public void create(Flight flight);
+   public int create(Flight flight);
    /** 
     * This is the method to be used to retrieve
     * a record from the ScheduledFlights table corresponding

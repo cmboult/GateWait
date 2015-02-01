@@ -19,7 +19,7 @@ public class FlightMapper implements RowMapper {
       flight.setIdentifier(rs.getString("Identifier"));
       flight.setOriginCity(rs.getString("OriginCity"));
       flight.setOriginName(rs.getString("OriginName"));
-      //flight.setTotalPassengers(rs.getInt("totalPassengers"));
+      flight.setTotalPassengers(rs.getInt("totalPassengers"));
       return flight;
    }
 }

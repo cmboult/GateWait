@@ -17,9 +17,15 @@ public class Flight {
 	private String originName;
 	private int totalPassengers;
 	
+	/**
+	 * Empty constructor
+	 */
 	public Flight(){}
 	
-	public Flight(String aircraftType, String destination, Date departureDate, Time departureTime, String identifier, String originCity, String originName){
+	/**
+	 * Constructor for creating flights from the database
+	 */
+	public Flight(String aircraftType, String destination, Date departureDate, Time departureTime, String identifier, String originCity, String originName, int totalPassengers){
 		this.setAircraftType(aircraftType);
 		this.setDestination(destination);
 		this.setDepartureDate(departureDate);
@@ -27,9 +33,12 @@ public class Flight {
 		this.setIdentifier(identifier);
 		this.setOriginCity(originCity);
 		this.setOriginName(originName);
-		this.setTotalPassengers(aircraftType);
+		this.setTotalPassengers(totalPassengers);
 	}
 	
+	/**
+	 * Constructor for create flights from an API call
+	 */
 	public Flight(String aircraftType, String destination, long epochTime, String identifier, String originCity, String originName){
 		this.setAircraftType(aircraftType);
 		this.setDestination(destination);
@@ -151,6 +160,13 @@ public class Flight {
 	 */
 	public void setTotalPassengers(String totalPassengers) {
 		//this.totalPassengers = totalPassengers;
+	}
+	
+	/**
+	 * @param totalPassengers the totalPassengers to set
+	 */
+	public void setTotalPassengers(int totalPassengers) {
+		this.totalPassengers = totalPassengers;
 	}
 
 }

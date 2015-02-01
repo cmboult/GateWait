@@ -32,9 +32,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/Christian/Downloads/smack_3_4_1/smack-3.4.1-0cec571.jar"/>
-	<classpathentry kind="lib" path="/Users/Christian/Downloads/smack_3_4_1/smackx-3.4.1-0cec571.jar"/>
-	<classpathentry kind="lib" path="/Users/Christian/Downloads/smack_3_4_1/smackx-debug-3.4.1-0cec571.jar"/>
-	<classpathentry kind="lib" path="/Users/Christian/Downloads/smack_3_4_1/smackx-experimental-0.1-0cec571.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
