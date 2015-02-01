@@ -4,6 +4,8 @@ import Flight.dao.*;
 
 import java.util.List;
 import javax.sql.DataSource;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import Flight.model.Flight;
 
@@ -22,13 +24,18 @@ public class JdbcFlightDAO implements FlightDAO{
 	    this.jdbcTemplateObject = new JdbcTemplate(dataSource);
 	}
 
-	public void create(Flight flight) {
+	public int create(Flight flight) {
 	    String SQL = "INSERT INTO `Scheduled Flights` (`AircraftType`, `Destination`, `DepartureDate`, " +
-	    			 "`DepartureTime`, `Identifier`, `OriginCity`, `OriginName`, `totalPassengers`) values (?, ?, ?, ?, ?, ?, ?, ?)"; 
-	    jdbcTemplateObject.update( SQL, new Object[] { flight.getAircraftType(), flight.getDestination(), 
-	    			flight.getDepartureDate(), flight.getDepartureTime(), flight.getIdentifier(), 
-	    			flight.getOriginCity(), flight.getOriginName(), flight.getTotalPassengers() });
-	    return;
+	    			 "`DepartureTime`, `Identifier`, `OriginCity`, `OriginName`, `totalPassengers`) values (?, ?, ?, ?, ?, ?, ?, ?)";
+	    try{
+	    	jdbcTemplateObject.update( SQL, new Object[] { flight.getAircraftType(), flight.getDestination(), 
+	    	flight.getDepartureDate(), flight.getDepartureTime(), flight.getIdentifier(), 
+	    	flight.getOriginCity(), flight.getOriginName(), flight.getTotalPassengers() });
+	    }
+	    catch(DataAccessException e){
+	    	return 1;
+	    }
+	    return 0;
 	}
 
 	public Flight getFlight(Integer id) {
