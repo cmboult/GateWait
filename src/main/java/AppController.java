@@ -14,6 +14,8 @@ public class AppController {
 	 */
 	public static void main(String[] args) {
 		
+		//test travis
+		
 		APIScheduler scheduler = new APIScheduler(2); // schedule new API call with how many results to be returned
 		scheduler.schedule();
 		
