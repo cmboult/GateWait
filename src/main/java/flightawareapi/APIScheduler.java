@@ -17,6 +17,7 @@ public class APIScheduler {
 	}
 	
 	public void schedule(){
+		System.out.println("API calls scheduled for every 24 hours.");
 		ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 		scheduler.scheduleAtFixedRate(new APICaller(howMany), 0, 24, TimeUnit.HOURS);
 	}	

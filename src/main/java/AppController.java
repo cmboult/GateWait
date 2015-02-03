@@ -20,6 +20,7 @@ public class AppController {
 		final String userName = "201748315501" + "@gcm.googleapis.com";
 	    final String password = "AIzaSyC5YZGgZZPo7KHmHbWetrFmtWrkFYIMRkI";
 
+	    System.out.println("Starting server...");
 	    GateWaitGCMServer client = new GateWaitGCMServer();
 
 	    try {
@@ -27,7 +28,8 @@ public class AppController {
 	    } catch (XMPPException e) {
 	      e.printStackTrace();
 	    }
-
+	    
+	    System.out.println("Server running and waiting for connections.");
 	}
 
 }
