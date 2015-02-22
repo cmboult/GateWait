@@ -16,18 +16,10 @@ public class AppController {
 		
 		APIScheduler scheduler = new APIScheduler(2); // schedule new API call with how many results to be returned
 		scheduler.schedule();
-		
-		final String userName = "201748315501" + "@gcm.googleapis.com";
-	    final String password = "AIzaSyC5YZGgZZPo7KHmHbWetrFmtWrkFYIMRkI";
 
 	    System.out.println("Starting server...");
 	    GateWaitGCMServer client = new GateWaitGCMServer();
-
-	    try {
-	      client.connect(userName, password); // connect to Google Cloud Severs
-	    } catch (XMPPException e) {
-	      e.printStackTrace();
-	    }
+	    client.start();
 	    
 	    System.out.println("Server running and waiting for connections.");
 	}
