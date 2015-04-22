@@ -158,8 +158,28 @@ public class Flight {
 	/**
 	 * @param totalPassengers the totalPassengers to set
 	 */
-	public void setTotalPassengers(String totalPassengers) {
-		//this.totalPassengers = totalPassengers;
+	public void setTotalPassengers(String aircraftType) {
+		if(aircraftType.equalsIgnoreCase("AT72")){
+			this.totalPassengers = 74;
+		}
+		else if(aircraftType.equalsIgnoreCase("B738")){
+			this.totalPassengers = 162;
+		}
+		else if(aircraftType.equalsIgnoreCase("DH8D")){
+			this.totalPassengers = 80;
+		}
+		else if(aircraftType.equalsIgnoreCase("E135")){
+			this.totalPassengers = 37;
+		}
+		else if(aircraftType.equalsIgnoreCase("JS41")){
+			this.totalPassengers = 30;
+		}
+		else if(aircraftType.equalsIgnoreCase("B752")){
+			this.totalPassengers = 235;
+		}
+		else{
+			this.totalPassengers = 100;
+		}
 	}
 	
 	/**

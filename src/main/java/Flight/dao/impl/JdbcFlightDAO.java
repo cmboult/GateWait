@@ -1,7 +1,6 @@
 package Flight.dao.impl;
 
 import Flight.dao.*;
-
 import java.util.List;
 import javax.sql.DataSource;
 
@@ -26,7 +25,7 @@ public class JdbcFlightDAO implements FlightDAO{
 
 	public int create(Flight flight) {
 	    String SQL = "INSERT INTO `Scheduled Flights` (`AircraftType`, `Destination`, `DepartureDate`, " +
-	    			 "`DepartureTime`, `Identifier`, `OriginCity`, `OriginName`, `totalPassengers`) values (?, ?, ?, ?, ?, ?, ?, ?)";
+	    			 "`DepartureTime`, `Identifier`, `OriginCity`, `OriginName`, `TotalPassengers`) values (?, ?, ?, ?, ?, ?, ?, ?)";
 	    try{
 	    	jdbcTemplateObject.update( SQL, new Object[] { flight.getAircraftType(), flight.getDestination(), 
 	    	flight.getDepartureDate(), flight.getDepartureTime(), flight.getIdentifier(), 
@@ -49,5 +48,10 @@ public class JdbcFlightDAO implements FlightDAO{
 	    List <Flight> flights = jdbcTemplateObject.query(SQL, new FlightMapper());
 	    return flights;
 	 }
+	
+	public int getTotalPassengers(String date, String time1, String time2){
+		String SQL = "SELECT SUM( TotalPassengers ) FROM  `Scheduled Flights` WHERE DepartureDate = ? AND DepartureTime BETWEEN ? AND ?";
+		return jdbcTemplateObject.queryForInt(SQL, new Object[]{date, time1, time2});
+	}
 
 }

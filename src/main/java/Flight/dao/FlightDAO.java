@@ -1,5 +1,7 @@
 package Flight.dao;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 import javax.sql.DataSource;
 
@@ -31,4 +33,5 @@ public interface FlightDAO {
     */
    public List<Flight> listFlights();
    
+   public int getTotalPassengers(String date, String time1, String time2);
 }

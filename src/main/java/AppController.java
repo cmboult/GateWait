@@ -1,6 +1,7 @@
-import org.jivesoftware.smack.XMPPException;
+import java.text.ParseException;
 
 import server.GateWaitGCMServer;
+import waittimecalculator.WaitTimeCalculator;
 import flightawareapi.APIScheduler;
 
 /**
@@ -22,6 +23,15 @@ public class AppController {
 	    client.start();
 	    
 	    System.out.println("Server running and waiting for connections.");
+		
+		WaitTimeCalculator calculator = new WaitTimeCalculator();
+		try {
+			System.out.println("Wait time: " + calculator.calculate("2015-04-20", "21:30:00"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
