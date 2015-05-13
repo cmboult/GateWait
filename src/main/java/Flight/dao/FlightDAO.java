@@ -1,11 +1,9 @@
 package Flight.dao;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.List;
 import javax.sql.DataSource;
 
 import Flight.model.Flight;
+import Flight.model.UserNotification;
 
 /**
  * The FlightDAO interface. Declares methods for interacting with the GateWait database.
@@ -20,18 +18,21 @@ public interface FlightDAO {
     * This is the method to be used to create
     * a record in the ScheduledFlights table.
     */
-   public int create(Flight flight);
+   public int create(Flight flight);  
    /** 
-    * This is the method to be used to retrieve
-    * a record from the ScheduledFlights table corresponding
-    * to a passed flight id.
+    * This is the method to be used to query for the
+    * total number of passengers flying on a specific date and 
+    * time range.
     */
-   public Flight getFlight(Integer id);
-   /** 
-    * This is the method to be used to list down
-    * all the records from the ScheduledFlights table.
-    */
-   public List<Flight> listFlights();
-   
    public int getTotalPassengers(String date, String time1, String time2);
+   /** 
+    * This is the method to insert data into the
+    * User Notifications table
+    */
+   public int insertUserNotification(String notifyDate, String notifyTime, String userID, String waitTime, String flightNumber, String departureDate, String departureTime);
+   /** 
+    * This is the method to check the database for any users that need
+    * to be notified
+    */
+   public UserNotification checkForNotify();
 }

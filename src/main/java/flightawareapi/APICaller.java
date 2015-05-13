@@ -1,7 +1,6 @@
 package flightawareapi;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -36,7 +35,7 @@ public class APICaller extends Thread{
 	
 	public void run(){
 		//Make API call and determine if it was a success. 0 for fail, > 0 for success and number of results
-		System.out.println("Calling API at  " + new Date(System.currentTimeMillis()) + ", " + new Time(System.currentTimeMillis()) + "...");
+		System.out.println("Calling API at  " + new Date(System.currentTimeMillis()) + "...");
 		int results = callAPI();
 		if( results > 0){
 			

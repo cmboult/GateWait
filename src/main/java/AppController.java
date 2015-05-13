@@ -1,7 +1,8 @@
-import java.text.ParseException;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import Flight.dao.impl.JdbcFlightDAO;
+import Flight.model.UserNotification;
 import server.GateWaitGCMServer;
-import waittimecalculator.WaitTimeCalculator;
 import flightawareapi.APIScheduler;
 
 /**
@@ -15,23 +16,18 @@ public class AppController {
 	 */
 	public static void main(String[] args) {
 		
-		APIScheduler scheduler = new APIScheduler(2); // schedule new API call with how many results to be returned
+		APIScheduler scheduler = new APIScheduler(65); // schedule new API call with how many results to be returned
 		scheduler.schedule();
 
+		JdbcFlightDAO flightJDBC = (JdbcFlightDAO)new ClassPathXmlApplicationContext("Spring-Module.xml").getBean("FlightDAO");
+//		flightJDBC.insertUserNotification("2015-05-13", "12:20:00", "userID", "waitTime", "flightNumber", "departureDate", "departureTime");
+		
 	    System.out.println("Starting server...");
 	    GateWaitGCMServer client = new GateWaitGCMServer();
-	    client.start();
-	    
+	    client.start(flightJDBC);
 	    System.out.println("Server running and waiting for connections.");
 		
-		WaitTimeCalculator calculator = new WaitTimeCalculator();
-		try {
-			System.out.println("Wait time: " + calculator.calculate("2015-04-20", "21:30:00"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+				
 	}
 
 }

@@ -27,7 +27,12 @@ import org.jivesoftware.smack.util.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.xmlpull.v1.XmlPullParser;
+
+import waittimecalculator.WaitTimeCalculator;
+
+import Flight.dao.impl.JdbcFlightDAO;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -49,10 +54,10 @@ import java.util.logging.Logger;
 import javax.net.ssl.SSLSocketFactory;
 
 /**
- * Sample Smack implementation of a client for GCM Cloud Connection Server.
+ * Smack implementation of a client for GCM Cloud Connection Server.
  * 
- * <p>
- * For illustration purposes only.
+ * This class uses the sample GCM server provided by Google to form the basic
+ * functionality. The code can be found at: https://developer.android.com/google/gcm/ccs.html
  */
 public class GateWaitGCMServer
 {
@@ -71,6 +76,8 @@ public class GateWaitGCMServer
     static Random random = new Random();
     XMPPConnection connection;
     ConnectionConfiguration config;
+    
+    WaitTimeCalculator calculator;
 
     private static Dao<User, String> userDao;
     private static Dao<NotificationKey, String> notificationDao;
@@ -142,8 +149,10 @@ public class GateWaitGCMServer
 
     public GateWaitGCMServer()
     {
-	// Add GcmPacketExtension
-	ProviderManager.getInstance().addExtensionProvider(GCM_ELEMENT_NAME, GCM_NAMESPACE,
+    	this.calculator = new WaitTimeCalculator();
+    	
+    	// Add GcmPacketExtension
+    	ProviderManager.getInstance().addExtensionProvider(GCM_ELEMENT_NAME, GCM_NAMESPACE,
 		new PacketExtensionProvider()
 		{
 
@@ -183,8 +192,7 @@ public class GateWaitGCMServer
      * Handles an upstream data message from a device application.
      * 
      * <p>
-     * This sample echo server sends an echo message back to the device.
-     * Subclasses should override this method to process an upstream message.
+     * Parses JSON to retrieve 'action', then carries out the appropriate task
      */
     public void handleIncomingDataMessage(Map<String, Object> jsonObject)
     {
@@ -194,37 +202,41 @@ public class GateWaitGCMServer
 	String from = jsonObject.get("from").toString();
 	// PackageName of the application that sent this message.
 	String category = jsonObject.get("category").toString();
+	System.out.println(category);
 	logger.log(Level.INFO, "Application: " + category);
 	
 	String action = payload.get("action");
-	if(action.equalsIgnoreCase("com.antoinecampbell.gcmdemo.REGISTER"))
+	if(action.equalsIgnoreCase("com.dissertation.cmboult.gatewaitapp.REGISTER"))
 	{
 	    String name = payload.get("name").toString();
 	    // Store username and registrationID in DB
 	    addUser(name, from);
 	    // Send an REGISTER response back
-	    payload.put("message", "Registration successful");
+	    payload.put("message", "GateWait registration successful!");
 	    String echo = createJsonMessage(from, getRandomMessageId(), payload, null, null, false);
 	    send(echo);
 	    logger.info("Adding new user: " + name + ":" + from);
 	}
-	else if(action.equalsIgnoreCase("com.antoinecampbell.gcmdemo.UNREGISTER"))
+	else if(action.equalsIgnoreCase("com.dissertation.cmboult.gatewaitapp.UNREGISTER"))
 	{
 	    removeUser(from);
 	    logger.info("Removing ID: " + from);
 	}
-	else if(action.equalsIgnoreCase("com.antoinecampbell.gcmdemo.ECHO"))
+	else if(action.equalsIgnoreCase("com.dissertation.cmboult.gatewaitapp.CALCULATE_WAIT_TIME"))
 	{
-	    // Send an ECHO response back
-	    String echo = createJsonMessage(from, getRandomMessageId(), payload, null, null, false);
-	    send(echo);
+		String waitTime = "";
+		try {
+			waitTime =  calculator.calculate(payload.get("dateOfFlight").toString(), payload.get("timeOfFlight").toString());
+		} catch (java.text.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		payload.put("waitTime", waitTime);
+	    // Send a response back with calculated wait time
+	    String response = createJsonMessage(from, getRandomMessageId(), payload, null, null, false);
+	    send(response);
 	}
-	else if(action.equalsIgnoreCase("com.antoinecampbell.gcmdemo.BROADCAST"))
-	{
-	    // Send an Broadcast response back
-	    broadcastMesage(payload);
-	}
-	else if(action.equalsIgnoreCase("com.antoinecampbell.gcmdemo.NOTIFICATION"))
+	else if(action.equalsIgnoreCase("com.dissertation.cmboult.gatewaitapp.NOTIFICATION"))
 	{
 	    // Send a Notification response back
 	    try
@@ -237,6 +249,20 @@ public class GateWaitGCMServer
 	    {
 		e.printStackTrace();
 	    }
+	}
+	else if(action.equalsIgnoreCase("com.dissertation.cmboult.gatewaitapp.NOTIFY_WAIT_TIME"))
+	{
+		System.out.println("notify wait time");
+		String notifyDate = payload.get("notifyDate");
+		String notifyTime = payload.get("notifyTime");
+		String waitTime = payload.get("waitTime");
+		String flightNumber = payload.get("flightNumber");
+		String departureTime = payload.get("departureTime");
+		String departureDate = payload.get("departureDate");
+	    // Save the details in the User Notifications table
+		JdbcFlightDAO flightJDBC = new JdbcFlightDAO();
+		//flightJDBC.setDataSource((JdbcFlightDAO) new ClassPathXmlApplicationContext("Spring-Module.xml").getBean("FlightDAO"));
+	    flightJDBC.insertUserNotification("test", "test", "test", "test", "test", "test", "test");
 	}
 	else 
 	{
@@ -658,7 +684,7 @@ public class GateWaitGCMServer
 	    }
 	    body.put("notification_key_name", newUser.getName());
 	    
-	    // Add all a user's devices to the request
+	    // Add all of user's devices to the request
 	    List<User> users = userDao.queryForEq("name", newUser.getName());
 	    List<String> ids = new ArrayList<String>();
 	    for(User user : users)
@@ -710,7 +736,7 @@ public class GateWaitGCMServer
 	}
     }
     
-    public void start()
+    public void start(JdbcFlightDAO flightJDBC)
     {
 	final String userName = GCM_SENDER_ID + "@gcm.googleapis.com";
 	final String password = GCM_SERVER_KEY;
@@ -726,6 +752,9 @@ public class GateWaitGCMServer
 	    TableUtils.createTableIfNotExists(connectionSource, User.class);
 	    notificationDao = DaoManager.createDao(connectionSource, NotificationKey.class);
 	    TableUtils.createTableIfNotExists(connectionSource, NotificationKey.class);
+	    
+	    NotifyScheduler scheduler = new NotifyScheduler(ccsClient);
+	    scheduler.schedule();
 	}
 	catch (XMPPException e)
 	{
